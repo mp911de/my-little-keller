@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="UTF-8">
+	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/css/bootstrap.min.css} "/>
+	<title>Unser kleiner Keller</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+	<script type="text/javascript">
+
+		function submitCount(f) {
+
+			var count = $(f).find("input[name='count']").val();
+			var ean = $(f).find("input[name='ean']").val();
+
+			$.ajax({
+				type: "POST",
+				url: "/api/events/inventory",
+				data: JSON.stringify({"ean": ean, "count": count}),
+				contentType: "application/json; charset=utf-8"
+			}).done(function (data, textStatus, jqXHR) {
+				if (jqXHR.status > 399) {
+					alert(textStatus);
+				}
+			}).fail(function (jqXHR, textStatus, errorThrown) {
+				if (jqXHR.status > 399) {
+					alert(textStatus + ' ' + jqXHR.status);
+				}
+			});
+
+			return false;
+		}
+
+	</script>
+
+</head>
+<body>
+<div class="container-fluid">
+	<table class="table">
+		<thead>
+		<tr>
+			<th scope="col">
+				<a href="?sort=count&direction=asc" th:unless="${sort.name() == 'count' && direction.name() == 'asc'}">Anzahl</a>
+				<a href="?sort=count&direction=desc" th:if="${sort.name() == 'count' && direction.name() == 'asc'}">Anzahl</a>
+			</th>
+			<th scope="col">
+				<a href="?sort=name&direction=asc" th:unless="${sort.name() == 'name' && direction.name() == 'asc'}">Bezeichnung</a>
+				<a href="?sort=name&direction=desc" th:if="${sort.name() == 'name' && direction.name() == 'asc'}">Bezeichnung</a>
+			</th>
+			<th scope="col">Kategorie</th>
+		</tr>
+		</thead>
+		<tbody th:each="row : ${rows}" th:remove="tag">
+		<tr>
+			<td scope="row">
+				<form onsubmit="return submitCount(this);">
+					<div class="form-row align-items-center">
+						<div>
+							<input type="text" class="form-control form-control-sm" name="count"
+								   th:value="${row.stockCount}" width="4" size="4">
+						</div>
+						<div>
+							<button type="submit" class="btn btn-outline-info btn-sm">Update</button>
+						</div>
+					</div>
+					<input type="hidden" name="ean" th:value="${row.ean}">
+				</form>
+				<small class="text-muted" th:text="${row.ean}"></small>
+			</td>
+			<td>
+				<span th:class="${row.stockCount < 2 ? 'text-warning' : ''}" th:utext="${row.name}"></span>
+				<span th:if="${row.hasDates()}">
+				<br/>
+				<small class="text-muted">
+					<span th:text="'Letzter Eingang: ' + ${row.lastIn} + ', Letzter Ausgang: ' + ${row.lastOut}"></span>
+				</small>
+				</span>
+			</td>
+			<td th:text="${row.category}"></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+</body>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</html>

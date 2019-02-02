@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+	<meta charset="UTF-8">
+	<link th:rel="stylesheet" th:href="@{webjars/bootstrap/css/bootstrap.min.css} "/>
+	<title>Unser kleiner Keller</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<script type="text/javascript">
+
+		function submitInbound(f) {
+
+			var ean = $("#ean-in").val();
+
+			$.ajax({
+				type: "POST",
+				url: "/api/events/inbound",
+				data: JSON.stringify({"ean": ean}),
+				contentType: "application/json; charset=utf-8",
+			}).done(function (data, textStatus, jqXHR) {
+				if (jqXHR.status > 399) {
+					alert(textStatus);
+					return;
+				}
+				$("#ean-in").val("").focus();
+			});
+
+			return false;
+		}
+
+		function submitOutbound(f) {
+
+			var ean = $("#ean-out").val();
+
+			$.ajax({
+				type: "POST",
+				url: "/api/events/inbound",
+				data: JSON.stringify({"ean": ean}),
+				contentType: "application/json; charset=utf-8",
+			}).done(function (data, textStatus, jqXHR) {
+
+				if (jqXHR.status > 399) {
+					alert(textStatus);
+					return;
+				}
+				$("#ean-out").val("").focus();
+			});
+
+			return false;
+		}
+	</script>
+</head>
+<body>
+<div class="container-fluid">
+
+	<h2>Eingang</h2>
+	<form onsubmit="return submitInbound(this);">
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="ean-in">EAN</label>
+				<input type="text" autocomplete="off" class="form-control" name="ean" id="ean-in" placeholder="EAN">
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-success">Wareneingang</button>
+	</form>
+
+	<h2>Ausgang</h2>
+	<form onsubmit="return submitOutbound(this);">
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="ean-out">EAN</label>
+				<input type="text" autocomplete="off" class="form-control" name="ean" id="ean-out" placeholder="EAN">
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-danger">Warenausgang</button>
+	</form>
+</div>
+</body>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</html>
