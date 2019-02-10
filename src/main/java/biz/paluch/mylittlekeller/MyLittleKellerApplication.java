@@ -22,12 +22,19 @@ import biz.paluch.mylittlekeller.descriptor.RedisCachingItemDescriptorClient;
 import biz.paluch.mylittlekeller.events.EventProcessor;
 import biz.paluch.mylittlekeller.usecases.Constants;
 
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -48,6 +55,23 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 @SpringBootApplication
 @EnableScheduling
 public class MyLittleKellerApplication {
+
+	@Autowired RedisTemplate<String, String> template;
+
+	@PostConstruct
+	private void postConstruct() {
+		HashOperations<String, String, String> h = template.opsForHash();
+
+		Set<String> keys = template.keys("ean:");
+
+		for (String key : keys) {
+			Map<String, String> entries = h.entries(key);
+
+			if (entries.get("ean").equals("")) {
+				System.out.println(key);
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyLittleKellerApplication.class, args);

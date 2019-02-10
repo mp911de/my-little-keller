@@ -15,9 +15,9 @@
  */
 package biz.paluch.mylittlekeller.usecases;
 
-import biz.paluch.mylittlekeller.domain.StockItem;
 import biz.paluch.mylittlekeller.descriptor.ItemDescriptor;
 import biz.paluch.mylittlekeller.descriptor.ItemDescriptorClient;
+import biz.paluch.mylittlekeller.domain.StockItem;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -51,6 +51,7 @@ class CreateStockItem {
 		});
 
 		StockItem stockItem = new StockItem();
+		descriptor.setEan(ean);
 		stockItem.setDescriptor(descriptor);
 		stockItem.setLastInbound(lastInbound);
 		stockItem.setLastOutbound(lastOutbound);

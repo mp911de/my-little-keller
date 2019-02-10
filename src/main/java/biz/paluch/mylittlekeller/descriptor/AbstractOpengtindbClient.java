@@ -18,6 +18,7 @@ package biz.paluch.mylittlekeller.descriptor;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import org.springframework.data.util.Pair;
@@ -34,10 +35,22 @@ abstract class AbstractOpengtindbClient implements ItemDescriptorClient {
 		ItemDescriptor descriptor = new ItemDescriptor();
 		descriptor.setService(OpengtindbClient.class.getName());
 
+		AtomicInteger resultCount = new AtomicInteger();
 		descriptor.setEan(ean);
 		AtomicBoolean error = new AtomicBoolean();
 		Arrays.stream(response.split("\n")) //
-				.filter(it -> it.contains("=")) //
+				.filter(it -> {
+
+					if (resultCount.get() > 1) {
+						return false;
+					}
+
+					if (it.equals("---")) {
+						resultCount.incrementAndGet();
+					}
+
+					return it.contains("=");
+				}) //
 				.map(AbstractOpengtindbClient::splitToPair).forEach(it -> {
 
 					if (it.getFirst().equals("error")) {

@@ -64,24 +64,27 @@ public class CodecheckClient implements ItemDescriptorClient {
 
 	@Override
 	public Optional<ItemDescriptor> find(String ean) {
-		//
+
 		ResponseEntity<String> entity = restTemplate
 				.getForEntity("https://www.codecheck.info/product.search?q={ean}&OK=Suchen", String.class, ean);
 
-		if (entity.getBody() == null || entity.getBody().contains("Es wurde kein Produkt")) {
+		if (entity.getBody() == null || entity.getBody().contains("Es wurde kein Produkt")
+				|| entity.getBody().contains("Resultate")) {
 
 			ItemDescriptor itemDescriptor = createDescriptor();
+			itemDescriptor.setEan(ean);
 
 			return Optional.of(itemDescriptor);
 		}
 
-		return Optional.of(decode(entity.getBody()));
+		return Optional.of(decode(ean, entity.getBody()));
 	}
 
-	static ItemDescriptor decode(String html) {
+	static ItemDescriptor decode(String ean, String html) {
 
 		ItemDescriptor descriptor = createDescriptor();
 		descriptor.setFound(true);
+		descriptor.setEan(ean);
 
 		Document document = Jsoup.parse(html, "http://void");
 

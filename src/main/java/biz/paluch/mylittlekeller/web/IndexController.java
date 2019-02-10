@@ -92,7 +92,7 @@ public class IndexController {
 			return it.getStockCount();
 		}
 
-		return "";
+		return "zzz (Unbekannt)";
 	}
 
 	@GetMapping("/entry")
@@ -120,6 +120,10 @@ public class IndexController {
 
 		if (StringUtils.hasText(descriptor.getVendor())) {
 			name.add("(" + org.apache.commons.lang3.StringUtils.abbreviate(descriptor.getVendor(), 20) + ")");
+		}
+
+		if (name.isEmpty()) {
+			name.add("ZZZ (Unbekannt)");
 		}
 
 		row.setName(StringUtils.collectionToDelimitedString(name, "<br/>"));

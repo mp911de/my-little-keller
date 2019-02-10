@@ -37,7 +37,7 @@ class CodecheckClientUnitTests {
 
 		String html = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
 
-		ItemDescriptor item = CodecheckClient.decode(html);
+		ItemDescriptor item = CodecheckClient.decode("", html);
 
 		assertThat(item.isFound()).isTrue();
 		assertThat(item.getName()).isEqualTo("Milfina fettarme H-Milch ultrahocherhitzt 1,5% Fett");

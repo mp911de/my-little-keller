@@ -35,12 +35,8 @@ public class EventProcessor {
 
 		log.info("Received event: {}", event);
 
-		if (event instanceof InboundEvent) {
-			recalculateSingleItemStock.recalculate(((InboundEvent) event).getEan());
-		}
-
-		if (event instanceof OutboundEvent) {
-			recalculateSingleItemStock.recalculate(((OutboundEvent) event).getEan());
+		if (event instanceof EanEvent) {
+			recalculateSingleItemStock.recalculate(((EanEvent) event).getEan());
 		}
 	}
 }
