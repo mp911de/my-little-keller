@@ -2,6 +2,17 @@
 
 Application to track inventory using an event-driven model using Redis. Built with Spring Boot, Spring Data and Python. This is a playground project to demonstrate an integration between a Java-server side application and an Raspberry PI/IoT device.
 
+**Frontend on the Fridge's Browser**
+
+<img src="img/IMG_0283.jpg" height="400">
+
+**Raspberry with LED Matrix Display**
+
+<img src="img/IMG_0290.jpg" height="400">
+<img src="img/IMG_0292.jpg" height="400">
+
+Barcode scanner: [MetroLogic 1690 USB Barcode Scanner](https://country.honeywellaidc.com/CatalogDocuments/00-02098%20REV%20G.pdf)
+
 ## Building from Source
 
 This app can be easily built with the maven wrapper. You also need JDK 1.8.
