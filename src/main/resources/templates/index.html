@@ -16,7 +16,7 @@
 
 			$.ajax({
 				type: "POST",
-				url: "/api/events/inventory",
+				url: "api/events/inventory",
 				data: JSON.stringify({"ean": ean, "count": count}),
 				contentType: "application/json; charset=utf-8"
 			}).done(function (data, textStatus, jqXHR) {
@@ -54,14 +54,16 @@
 		<tbody th:each="row : ${rows}" th:remove="tag">
 		<tr>
 			<td scope="row">
-				<form onsubmit="return submitCount(this);">
+				<form>
 					<div class="form-row align-items-center">
 						<div>
-							<input type="text" class="form-control form-control-sm" name="count"
-								   th:value="${row.stockCount}" width="4" size="4">
+							<input type="number" class="form-control form-control-sm" name="count"
+								   th:value="${row.stockCount}" width="2" size="2" style="width: 3rem">
 						</div>
 						<div>
-							<button type="submit" class="btn btn-outline-info btn-sm">Update</button>
+							<button type="button" class="btn btn-outline-info btn-sm"
+									onclick="return submitCount(this.form);">Update
+							</button>
 						</div>
 					</div>
 					<input type="hidden" name="ean" th:value="${row.ean}">
@@ -69,7 +71,7 @@
 				<small class="text-muted" th:text="${row.ean}"></small>
 			</td>
 			<td>
-				<span th:class="${row.stockCount < 2 ? 'text-warning' : ''}" th:utext="${row.name}"></span>
+				<span th:class="${row.stockCount == 0 ? 'text-warning' : ''}" th:utext="${row.name}"></span>
 				<span th:if="${row.hasDates()}">
 				<br/>
 				<small class="text-muted">
@@ -84,7 +86,7 @@
 </div>
 </body>
 
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{webjars/bootstrap/js/bootstrap.min.js}"></script>
 </html>

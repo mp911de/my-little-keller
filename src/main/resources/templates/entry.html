@@ -14,9 +14,9 @@
 
 			$.ajax({
 				type: "POST",
-				url: "/api/events/inbound",
+				url: "api/events/inbound",
 				data: JSON.stringify({"ean": ean}),
-				contentType: "application/json; charset=utf-8",
+				contentType: "application/json; charset=utf-8"
 			}).done(function (data, textStatus, jqXHR) {
 				if (jqXHR.status > 399) {
 					alert(textStatus);
@@ -34,9 +34,9 @@
 
 			$.ajax({
 				type: "POST",
-				url: "/api/events/inbound",
+				url: "api/events/inbound",
 				data: JSON.stringify({"ean": ean}),
-				contentType: "application/json; charset=utf-8",
+				contentType: "application/json; charset=utf-8"
 			}).done(function (data, textStatus, jqXHR) {
 
 				if (jqXHR.status > 399) {
@@ -79,7 +79,7 @@
 </div>
 </body>
 
-<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
-<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{webjars/bootstrap/js/bootstrap.min.js}"></script>
 </html>

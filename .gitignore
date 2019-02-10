@@ -23,3 +23,6 @@
 /nbdist/
 /.nb-gradle/
 /build/
+
+/application.properties
+/logback.xml
