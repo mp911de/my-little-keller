@@ -1,8 +1,6 @@
 # My Little Keller
 
-Application to track inventory using an event-driven model using Redis. Built with Spring Boot, Spring Data and Python. This is a playground project to demonstrate an integration between a Java-serverside application and an Raspberry PI/IoT device.
-
-Inventory can be entered
+Application to track inventory using an event-driven model using Redis. Built with Spring Boot, Spring Data and Python. This is a playground project to demonstrate an integration between a Java-server side application and an Raspberry PI/IoT device.
 
 ## Building from Source
 

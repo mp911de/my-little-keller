@@ -26,3 +26,5 @@
 
 /application.properties
 /logback.xml
+
+cli/venv
