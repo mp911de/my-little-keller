@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package biz.paluch.mylittlekeller.domain;
+package biz.paluch.mylittlekeller.events;
 
-import biz.paluch.mylittlekeller.descriptor.ItemDescriptor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -24,11 +24,9 @@ import java.time.LocalDateTime;
  * @author Mark Paluch
  */
 @Data
-public class StockItem {
+@AllArgsConstructor
+public class HideEvent implements EanEvent {
 
-	private ItemDescriptor descriptor;
-	private int stockCount;
-	private LocalDateTime lastInbound;
-	private LocalDateTime lastOutbound;
-	private boolean hidden;
+	final String ean;
+	final LocalDateTime time;
 }

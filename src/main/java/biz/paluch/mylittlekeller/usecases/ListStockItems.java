@@ -44,6 +44,9 @@ public class ListStockItems {
 	public List<StockItem> list() {
 
 		List<Object> values = hashOperations.values(Constants.STOCK);
-		return values.stream().filter(StockItem.class::isInstance).map(StockItem.class::cast).collect(Collectors.toList());
+		return values.stream().filter(StockItem.class::isInstance) //
+				.map(StockItem.class::cast) //
+				.filter(it -> !it.isHidden()) //
+				.collect(Collectors.toList());
 	}
 }

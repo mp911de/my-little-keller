@@ -15,6 +15,8 @@
  */
 package biz.paluch.mylittlekeller.usecases;
 
+import biz.paluch.mylittlekeller.events.EanEvent;
+import biz.paluch.mylittlekeller.events.HideEvent;
 import biz.paluch.mylittlekeller.events.InboundEvent;
 import biz.paluch.mylittlekeller.events.InventoryCountEvent;
 import biz.paluch.mylittlekeller.events.OutboundEvent;
@@ -49,11 +51,7 @@ public class SubmitWarehouseMovement {
 	 * @param count
 	 */
 	public void inbound(String ean, int count) {
-
-		InboundEvent event = new InboundEvent(ean, count, LocalDateTime.now());
-		jsonRedisTemplate.opsForList().rightPush(Constants.EVENT_LIST, event);
-
-		recalculateStockEvents.publish(event);
+		publish(new InboundEvent(ean, count, LocalDateTime.now()));
 	}
 
 	/**
@@ -63,11 +61,7 @@ public class SubmitWarehouseMovement {
 	 * @param count
 	 */
 	public void outbound(String ean, int count) {
-
-		OutboundEvent event = new OutboundEvent(ean, count, LocalDateTime.now());
-		jsonRedisTemplate.opsForList().rightPush(Constants.EVENT_LIST, event);
-
-		recalculateStockEvents.publish(event);
+		publish(new OutboundEvent(ean, count, LocalDateTime.now()));
 	}
 
 	/**
@@ -77,10 +71,21 @@ public class SubmitWarehouseMovement {
 	 * @param count
 	 */
 	public void inventory(String ean, int count) {
+		publish(new InventoryCountEvent(ean, count, LocalDateTime.now()));
+	}
 
-		InventoryCountEvent event = new InventoryCountEvent(ean, count, LocalDateTime.now());
+	/**
+	 * Hide item until next usage.
+	 *
+	 * @param ean
+	 */
+	public void hide(String ean) {
+		publish(new HideEvent(ean, LocalDateTime.now()));
+	}
+
+	private void publish(EanEvent event) {
+
 		jsonRedisTemplate.opsForList().rightPush(Constants.EVENT_LIST, event);
-
 		recalculateStockEvents.publish(event);
 	}
 }

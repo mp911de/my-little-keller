@@ -17,6 +17,7 @@ package biz.paluch.mylittlekeller.usecases;
 
 import biz.paluch.mylittlekeller.domain.StockItem;
 import biz.paluch.mylittlekeller.events.EanEvent;
+import biz.paluch.mylittlekeller.events.HideEvent;
 import biz.paluch.mylittlekeller.events.InboundEvent;
 import biz.paluch.mylittlekeller.events.InventoryCountEvent;
 import biz.paluch.mylittlekeller.events.OutboundEvent;
@@ -64,12 +65,20 @@ public class RecalculateSingleItemStock {
 		int stock = 0;
 		LocalDateTime inbound = null;
 		LocalDateTime outbound = null;
+		boolean hidden = false;
 
 		for (Object event : events) {
 
 			if (!(event instanceof EanEvent) || !((EanEvent) event).getEan().equals(ean)) {
 				continue;
 			}
+
+			if (event instanceof HideEvent) {
+				hidden = true;
+				continue;
+			}
+
+			hidden = false;
 
 			if (event instanceof InboundEvent) {
 				stock += ((InboundEvent) event).getCount();
@@ -86,7 +95,7 @@ public class RecalculateSingleItemStock {
 			}
 		}
 
-		StockItem stockItem = createStockItem.create(ean, stock, inbound, outbound);
+		StockItem stockItem = createStockItem.create(ean, stock, inbound, outbound, hidden);
 		persistStockItem.persist(stockItem);
 
 		log.info("Recalculated stock for " + stockItem);

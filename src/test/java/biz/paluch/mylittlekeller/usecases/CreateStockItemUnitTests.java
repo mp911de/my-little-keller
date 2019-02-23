@@ -45,7 +45,7 @@ class CreateStockItemUnitTests {
 		LocalDateTime inbound = LocalDateTime.now();
 		LocalDateTime outbound = LocalDateTime.now();
 
-		StockItem stockItem = create.create("1234", 44, inbound, outbound);
+		StockItem stockItem = create.create("1234", 44, inbound, outbound, false);
 
 		assertThat(stockItem.getDescriptor().isFound()).isFalse();
 		assertThat(stockItem.getStockCount()).isEqualTo(44);

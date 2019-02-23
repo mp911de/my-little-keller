@@ -36,7 +36,7 @@ class CreateStockItem {
 
 	private final ItemDescriptorClient client;
 
-	StockItem create(String ean, int stockCount, LocalDateTime lastInbound, LocalDateTime lastOutbound) {
+	StockItem create(String ean, int stockCount, LocalDateTime lastInbound, LocalDateTime lastOutbound, boolean hidden) {
 
 		Optional<ItemDescriptor> articleDescriptor = client.find(ean);
 
@@ -56,6 +56,7 @@ class CreateStockItem {
 		stockItem.setLastInbound(lastInbound);
 		stockItem.setLastOutbound(lastOutbound);
 		stockItem.setStockCount(stockCount);
+		stockItem.setHidden(hidden);
 
 		return stockItem;
 	}

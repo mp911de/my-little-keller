@@ -66,6 +66,16 @@ class EventController {
 		movement.inventory(descriptor.getEan(), descriptor.getCount());
 	}
 
+	/**
+	 * Receive inventory count (correction) event.
+	 *
+	 * @param descriptor
+	 */
+	@PostMapping("hide")
+	public void hide(@RequestBody Descriptor descriptor) {
+		movement.hide(descriptor.getEan());
+	}
+
 	@Data
 	static class Descriptor {
 
